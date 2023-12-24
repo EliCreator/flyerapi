@@ -4,12 +4,12 @@ import codecs
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.0'
+VERSION = '1.0.2'
 DESCRIPTION = 'Asynchronous api of the Flyer service'
 
 here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as file:
-    long_description = '\n' + file.read()
+    long_description = file.read()
 
 
 setup(
@@ -31,9 +31,9 @@ setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
     ],
-    url='https://github.com/EliCreater/flyerapi',
+    url='https://github.com/EliCreator/flyerapi',
     project_urls={
-        'Homepage': 'https://github.com/EliCreater/flyerapi',
-        'Bug Tracker': 'https://github.com/EliCreater/flyerapi/issues',
+        'Homepage': 'https://github.com/EliCreator/flyerapi',
+        'Bug Tracker': 'https://github.com/EliCreator/flyerapi/issues',
     },
 )

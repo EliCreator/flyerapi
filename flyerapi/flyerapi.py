@@ -1,17 +1,25 @@
 import time
+import logging
 
 import aiohttp
-from aiohttp.client_exceptions import ClientConnectorError
+from aiohttp.client_exceptions import ClientConnectorError, ContentTypeError
+
+
+logger = logging.getLogger('Flyer')
 
 
 class Flyer:
 
     def __init__(self, key: str):
+        if not isinstance(key, str):
+            raise TypeError('key must be a string')
+
         self.key = key
-        self.service_shutdown_timeout = 60 * 5
+        self.service_shutdown_timeout = 60
         self._service_shutdown = 0
 
-    async def check(self, user_id: int, timeout: float=5, see_print: bool=True) -> bool:
+
+    async def check(self, user_id: int, timeout: float=5) -> bool:
         """
         Check user subscription status.
 
@@ -19,9 +27,15 @@ class Flyer:
         :return: True if subscribed, False otherwise
         """
 
-        # If the server is not responding
-        if self._service_shutdown * self.service_shutdown_timeout >= time.time():
+        if not isinstance(user_id, int):
+            logger.error('user_id must be an integer, got {}'.format(type(user_id).__name__))
             return True
+
+
+        # If the server is not responding
+        if self._service_shutdown + self.service_shutdown_timeout >= time.time():
+            return True
+
 
         try:
             url = 'https://api.flyerservice.io/check'
@@ -37,19 +51,26 @@ class Flyer:
             self._service_shutdown = time.time()
             return True
 
-        # Another error
-        except Exception as e:
-            if see_print:
-                print(f'Flyer request error: {str(e)}')
+        # Answer error
+        except ContentTypeError:
+            logger.error(f'Request: {str(e)}')
             return True
 
+        # Another error
+        except Exception as e:
+            logger.error(f'Request: {str(e)}')
+            return True
+
+
         # Warning notification
-        if see_print:
-            if 'error' in result:
-                print('Flyer error: {}'.format(result['error']))
-            elif 'warning' in result:
-                print('Flyer warning: {}'.format(result['warning']))
-            elif 'info' in result:
-                pass
+        if 'error' in result:
+            logger.error(result['error'])
+
+        elif 'warning' in result:
+            logger.warning(result['warning'])
+
+        elif 'info' in result:
+            logger.info(result['info'])
+
 
         return result['skip']
