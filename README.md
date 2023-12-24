@@ -1,5 +1,5 @@
 <div align="left">
-    <h1>FlyerAPI<img src="https://telegra.ph/file/e2a2f0526d2937973a70b.png" width=30 height=30></h1>
+    <h1>FlyerAPI<img src="https://telegra.ph/file/e2a2f0526d2937973a70b.png" width=50 height=50></h1>
     <p align="left" >
         <a href="https://pypi.org/project/flyerapi/">
             <img src="https://img.shields.io/pypi/v/flyerapi?style=flat-square" alt="PyPI">
@@ -31,7 +31,7 @@ pip install flyerapi
  - ``Asynchronous``
  - ``Exception handling``
 
-## Basic example
+## Basic example with aiogram
 
 ```python
 from flyerapi import Flyer
@@ -39,14 +39,14 @@ from flyerapi import Flyer
 from aiogram import types
 
 
-flyer = Flyer(key)
+flyer = Flyer(KEY)
 
 async def message_handler(message: types.Message):
     if not await flyer.check(message.from_user.id):
         return
 
 async def callback_handler(call: types.CallbackQuery):
-    if not await flyer.check(call.message.from_user.id):
+    if not await flyer.check(call.from_user.id):
         return
 ```
 
