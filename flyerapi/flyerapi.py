@@ -52,7 +52,7 @@ class Flyer:
             return True
 
         # Answer error
-        except ContentTypeError:
+        except ContentTypeError as e:
             logger.error(f'Request: {str(e)}')
             return True
 
