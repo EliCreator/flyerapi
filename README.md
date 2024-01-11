@@ -25,6 +25,7 @@ pip install flyerapi
 
  - ``Python 3.7+``
  - ``aiohttp``
+ - ``pydantic``
 
 ## Features
 
@@ -50,4 +51,4 @@ async def callback_handler(call: types.CallbackQuery):
         return
 ```
 
-Developed by Eli (c) 2023
+Developed by Eli (c) 2024

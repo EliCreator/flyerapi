@@ -1,1 +1,6 @@
-from .flyerapi import Flyer
+from .api import Flyer
+
+
+__all__ = (
+    "Flyer",
+)
