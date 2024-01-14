@@ -10,13 +10,14 @@ logger = logging.getLogger('Flyer')
 
 class Flyer:
 
-    def __init__(self, key: str):
+    def __init__(self, key: str, debug: bool = False):
         if not isinstance(key, str):
             raise TypeError('key must be a string')
 
         self.key = key
         self.service_shutdown_timeout = 60
         self._service_shutdown = 0
+        self.debug = debug
 
 
     async def check(self, user_id: int, timeout: float=5) -> bool:
@@ -26,6 +27,10 @@ class Flyer:
         :param user_id: User ID
         :return: True if subscribed, False otherwise
         """
+
+        if not self.key:
+            return True
+
 
         if not isinstance(user_id, int):
             logger.error('user_id must be an integer, got {}'.format(type(user_id).__name__))
@@ -46,6 +51,9 @@ class Flyer:
                 async with session.post(url, headers=headers, json=data, timeout=timeout) as response:
                     result = await response.json()
 
+                    if self.debug:
+                        print(result)
+
         # If the server is not responding
         except (ClientConnectorError, TimeoutError):
             self._service_shutdown = time.time()
@@ -62,7 +70,7 @@ class Flyer:
             return True
 
 
-        # Warning notification
+        # Response details
         if 'error' in result:
             logger.error(result['error'])
 

@@ -4,7 +4,7 @@ import codecs
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.2'
+VERSION = '1.0.5'
 DESCRIPTION = 'Asynchronous api of the Flyer service'
 
 here = os.path.abspath(os.path.dirname(__file__))
