@@ -1,3 +1,4 @@
+from cachetools import TTLCache
 import time
 import logging
 
@@ -15,8 +16,12 @@ class Flyer:
             raise TypeError('key must be a string')
 
         self.key = key
+        self.service_cache_answer = 60
         self.service_shutdown_timeout = 60
+
+        self._cache = TTLCache(maxsize=10000, ttl=self.service_cache_answer)
         self._service_shutdown = 0
+
         self.debug = debug
 
 
@@ -37,8 +42,19 @@ class Flyer:
             return True
 
 
+        # Chat is not private
+        if user_id < 0:
+            logger.error('The id is not private')
+            return True
+
+
         # If the server is not responding
         if self._service_shutdown + self.service_shutdown_timeout >= time.time():
+            return True
+
+
+        # If cached response
+        if self._cache.get(user_id, False):
             return True
 
 
@@ -54,7 +70,7 @@ class Flyer:
                     if self.debug:
                         print(result)
 
-        # If the server is not responding
+        # The server is not responding
         except (ClientConnectorError, TimeoutError):
             self._service_shutdown = time.time()
             return True
@@ -79,6 +95,11 @@ class Flyer:
 
         elif 'info' in result:
             logger.info(result['info'])
+
+
+        # If response is True, writing in cache
+        if result['skip']:
+            self._cache[user_id] = True
 
 
         return result['skip']
