@@ -4,7 +4,7 @@ import codecs
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.6'
+VERSION = '1.0.7'
 DESCRIPTION = 'Asynchronous api of the Flyer service'
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -21,7 +21,7 @@ setup(
     long_description_content_type='text/markdown',
     long_description=long_description,
     packages=find_packages(),
-    install_requires=['aiohttp'],
+    install_requires=['aiohttp', 'cachetools'],
     keywords=['python', 'flyer', 'async', 'asyncio', 'cache'],
     classifiers=[
         'Development Status :: 4 - Beta',
