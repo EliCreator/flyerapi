@@ -42,10 +42,12 @@ from aiogram import types
 flyer = Flyer(KEY)
 
 async def message_handler(message: types.Message):
+    # Use it wherever verification is necessary
     if not await flyer.check(message.from_user.id):
         return
 
 async def callback_handler(call: types.CallbackQuery):
+    # Use it wherever verification is necessary
     if not await flyer.check(call.from_user.id):
         return
 ```

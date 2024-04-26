@@ -25,6 +25,31 @@ class Flyer:
         self.debug = debug
 
 
+    async def _request(self, method: str, params: dict = {}, **kwargs) -> dict:
+        url = f'https://api.flyerservice.io/{method}'
+        headers = {'Content-Type': 'application/json'}
+        data = {'key': self.key, **params}
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, json=data, **kwargs) as response:
+                result = await response.json()
+
+                if self.debug:
+                    print(result)
+
+        return result
+
+
+    async def get_me(self) -> dict:
+        """
+        Get bot info.
+
+        :return: dict information
+        """
+
+        return await self._request('get_me')
+
+
     async def check(self, user_id: int, timeout: float=5) -> bool:
         """
         Check user subscription status.
@@ -59,16 +84,11 @@ class Flyer:
 
 
         try:
-            url = 'https://api.flyerservice.io/check'
-            headers = {'Content-Type': 'application/json'}
-            data = {'key': self.key, 'user_id': user_id}
-
-            async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=data, timeout=timeout) as response:
-                    result = await response.json()
-
-                    if self.debug:
-                        print(result)
+            result = await self._request(
+                method='check',
+                params={'user_id': user_id},
+                timeout=timeout,
+            )
 
         # The server is not responding
         except (ClientConnectorError, TimeoutError):
@@ -98,7 +118,7 @@ class Flyer:
 
 
         # If response is True, writing in cache
-        if result['skip']:
+        if result['skip'] and 'error' not in result:
             self._cache[user_id] = True
 
 
