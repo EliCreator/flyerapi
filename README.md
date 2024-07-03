@@ -43,12 +43,12 @@ flyer = Flyer(KEY)
 
 async def message_handler(message: types.Message):
     # Use it wherever verification is necessary
-    if not await flyer.check(message.from_user.id):
+    if not await flyer.check(message.from_user.id, language_code=message.from_user.language_code):
         return
 
 async def callback_handler(call: types.CallbackQuery):
     # Use it wherever verification is necessary
-    if not await flyer.check(call.from_user.id):
+    if not await flyer.check(call.from_user.id, language_code=call.from_user.language_code):
         return
 ```
 

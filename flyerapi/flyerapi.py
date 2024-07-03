@@ -1,3 +1,4 @@
+from typing import Optional
 from cachetools import TTLCache
 import time
 import logging
@@ -11,13 +12,14 @@ logger = logging.getLogger('Flyer')
 
 class Flyer:
 
-    def __init__(self, key: str, debug: bool = False):
+    def __init__(self, key: str, debug: bool = False, **request_kwargs):
         if not isinstance(key, str):
             raise TypeError('key must be a string')
 
         self.key = key
         self.service_cache_answer = 60
         self.service_shutdown_timeout = 60
+        self.request_kwargs = request_kwargs
 
         self._cache = TTLCache(maxsize=10000, ttl=self.service_cache_answer)
         self._service_shutdown = 0
@@ -25,13 +27,13 @@ class Flyer:
         self.debug = debug
 
 
-    async def _request(self, method: str, params: dict = {}, **kwargs) -> dict:
+    async def _request(self, method: str, params: dict = {}, timeout: float = 30) -> dict:
         url = f'https://api.flyerservice.io/{method}'
         headers = {'Content-Type': 'application/json'}
         data = {'key': self.key, **params}
 
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, headers=headers, json=data, **kwargs) as response:
+            async with session.post(url, headers=headers, json=data, timeout=timeout, **self.request_kwargs) as response:
                 result = await response.json()
 
                 if self.debug:
@@ -50,7 +52,7 @@ class Flyer:
         return await self._request('get_me')
 
 
-    async def check(self, user_id: int, timeout: float=5) -> bool:
+    async def check(self, user_id: int, language_code: Optional[str] = None, timeout: float = 5) -> bool:
         """
         Check user subscription status.
 
@@ -83,10 +85,14 @@ class Flyer:
             return True
 
 
+        params = {'user_id': user_id}
+        if isinstance(language_code, str):
+            params['language_code'] = language_code
+
         try:
             result = await self._request(
                 method='check',
-                params={'user_id': user_id},
+                params=params,
                 timeout=timeout,
             )
 
