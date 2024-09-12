@@ -52,4 +52,16 @@ async def callback_handler(call: types.CallbackQuery):
         return
 ```
 
+## Using custom message
+
+```python
+message = {
+    'text': '<b>Custom text</b> for $name',  # HTML
+    'button_bot': 'Start',
+    'button_channel': 'Subscribe',
+}
+await flyer.check(user_id, language_code=language_code, message=message)
+```
+
+
 Developed by Eli (c) 2023

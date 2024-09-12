@@ -52,7 +52,7 @@ class Flyer:
         return await self._request('get_me')
 
 
-    async def check(self, user_id: int, language_code: Optional[str] = None, timeout: float = 5) -> bool:
+    async def check(self, user_id: int, language_code: Optional[str] = None, timeout: float = 5, **kwargs) -> bool:
         """
         Check user subscription status.
 
@@ -88,6 +88,7 @@ class Flyer:
         params = {'user_id': user_id}
         if isinstance(language_code, str):
             params['language_code'] = language_code
+        params.update(kwargs)
 
         try:
             result = await self._request(
