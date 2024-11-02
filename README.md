@@ -13,7 +13,8 @@
 
 ## Usage
 
-With ``flyerapi`` you can use <a href="https://t.me/FlyerServiceBot">FlyerAPI</a> together with Telegram
+With ``flyerapi`` you can use <a href="https://api.flyerservice.io/redoc">FlyerAPI</a> together with Telegram<br/>
+Documentation: https://api.flyerservice.io/redoc
 
 ## Installation
 
@@ -31,7 +32,8 @@ pip install flyerapi
  - ``Asynchronous``
  - ``Exception handling``
 
-## Basic example with aiogram
+
+## Basic example for a mandatory subscription with aiogram
 
 ```python
 from flyerapi import Flyer
@@ -52,16 +54,39 @@ async def callback_handler(call: types.CallbackQuery):
         return
 ```
 
-## Using custom message
+### Using custom message
 
 ```python
 message = {
     'text': '<b>Custom text</b> for $name',  # HTML
+
     'button_bot': 'Start',
     'button_channel': 'Subscribe',
+    'button_url': 'Follow',
 }
 await flyer.check(user_id, language_code=language_code, message=message)
 ```
 
+## Example for tasks
 
-Developed by Eli (c) 2023
+```python
+# Getting tasks for the user
+tasks = await flyer.get_tasks(
+    user_id=user_id,
+    language_code=language_code,  # used only for new pinning
+    limit=5,  # used only for new pinning
+)
+
+...
+
+# Checking for completed task
+status = await flyer.check_task(
+    user_id=user_id,
+    signature=tasks[0]['signature'],
+)
+
+
+```
+
+
+Developed by Eli (c) 2023-2024
