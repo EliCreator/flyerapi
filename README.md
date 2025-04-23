@@ -64,6 +64,7 @@ message = {
     'button_channel': 'Subscribe',
     'button_url': 'Follow',
     'button_boost': 'Boost',
+    'button_fp': 'Perform',
 }
 await flyer.check(user_id, language_code=language_code, message=message)
 ```
