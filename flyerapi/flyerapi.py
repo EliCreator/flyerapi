@@ -135,13 +135,13 @@ class Flyer:
             return True
 
 
-        # If response is True, writing in cache
-        if result['skip'] and 'error' not in result:
-            self._cache[user_id] = True
-
         # Calling an exception
         if 'skip' not in result and 'error' in result:
             raise APIError(result['error'])
+
+        # If response is True, writing in cache
+        if result['skip'] and 'error' not in result:
+            self._cache[user_id] = True
 
         return result['skip']
 
