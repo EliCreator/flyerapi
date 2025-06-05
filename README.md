@@ -33,6 +33,7 @@ pip install flyerapi
  - ``Exception handling``
 
 
+
 ## Basic example for a mandatory subscription with aiogram
 
 ```python
@@ -63,9 +64,12 @@ message = {
     'button_bot': 'Start',
     'button_channel': 'Subscribe',
     'button_url': 'Follow',
+    'button_boost': 'Boost',
+    'button_fp': 'Perform',
 }
 await flyer.check(user_id, language_code=language_code, message=message)
 ```
+
 
 ## Example for tasks
 
@@ -89,4 +93,4 @@ status = await flyer.check_task(
 ```
 
 
-Developed by Eli (c) 2023-2024
+Developed by Eli (c) 2023-2025

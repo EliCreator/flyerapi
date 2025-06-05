@@ -1,1 +1,1 @@
-from .flyerapi import Flyer
+from .flyerapi import Flyer, APIError
