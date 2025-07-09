@@ -25,7 +25,7 @@ class Flyer:
 
         self.key = key
         self.debug = debug
-        self.service_shutdown_timeout = 60
+        self.service_shutdown_timeout = 5
         self.request_kwargs = request_kwargs
 
         service_cache_answer = 60
@@ -120,7 +120,7 @@ class Flyer:
             )
 
         # The server is not responding
-        except (ClientConnectorError, TimeoutError):
+        except ClientConnectorError:
             self._service_shutdown = time.time()
             return True
 
@@ -194,7 +194,7 @@ class Flyer:
             )
 
         # The server is not responding
-        except (ClientConnectorError, TimeoutError):
+        except ClientConnectorError:
             self._service_shutdown = time.time()
             return []
 
@@ -241,9 +241,9 @@ class Flyer:
             return None
 
 
-        # If the server is not responding
-        if self._service_shutdown + self.service_shutdown_timeout >= time.time():
-            return None
+        # # If the server is not responding
+        # if self._service_shutdown + self.service_shutdown_timeout >= time.time():
+        #     return None
 
 
         params = {'user_id': user_id, 'signature': signature}
@@ -255,7 +255,7 @@ class Flyer:
             )
 
         # The server is not responding
-        except (ClientConnectorError, TimeoutError):
+        except ClientConnectorError:
             self._service_shutdown = time.time()
             return None
 
@@ -325,7 +325,7 @@ class Flyer:
             )
 
         # The server is not responding
-        except (ClientConnectorError, TimeoutError):
+        except ClientConnectorError:
             self._service_shutdown = time.time()
             return []
 
@@ -378,7 +378,7 @@ class Flyer:
             )
 
         # The server is not responding
-        except (ClientConnectorError, TimeoutError):
+        except ClientConnectorError:
             self._service_shutdown = time.time()
             return None
 
