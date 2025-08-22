@@ -81,10 +81,14 @@ status = await flyer.check_task(user_id=user_id, signature=signature)
 
 ```
 
-
-## Пример для использования заданий в обязательной подписки с использованием aiogram
+### Пример для использования заданий в обязательной подписки с использованием aiogram
 
 Код вынесен в файл: [`examples/check_with_tasks.py`](examples/check_with_tasks.py)
+
+
+## Пример вебхуков
+
+Код вынесен в файл: [`examples/webhook.py`](examples/webhook.py)
 
 
 Developed by Eli (c) 2023-2025
