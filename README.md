@@ -57,6 +57,7 @@ async def callback_handler(call: types.CallbackQuery):
 
 ```python
 message = {
+    'rows': 2,
     'text': '<b>Пользовательский текст</b> для $name',  # HTML
 
     'button_bot': 'Запустить',
