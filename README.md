@@ -65,7 +65,6 @@ message = {
     'button_url': 'Перейти',
     'button_boost': 'Голосовать',
     'button_fp': 'Выполнить',
-    'button_view': 'Смотреть',
 }
 await flyer.check(user_id, language_code=language_code, message=message)
 ```
@@ -79,7 +78,19 @@ tasks = await flyer.get_tasks(user_id=user_id, language_code=language_code, limi
 
 # Получиение статуса задания
 signature = tasks[0]['signature']  # пример
-status = await flyer.check_task(signature)
+status = await flyer.check_task(user_id=user_id, signature=signature)
+
+```
+
+## Пример для заданий (MAX)
+
+```python
+# Получение заданий для пользователя
+tasks = await flyer.get_tasks_max(chat_id=chat_id, user_id=user_id, user_locale=user_locale, limit=5)
+
+# Получиение статуса задания
+signature = tasks[0]['signature']  # пример
+status = await flyer.check_task_max(user_id=user_id, signature=signature)
 
 ```
 
@@ -93,4 +104,4 @@ status = await flyer.check_task(signature)
 Код вынесен в файл: [`examples/webhook.py`](examples/webhook.py)
 
 
-Developed by Eli (c) 2023-2025
+Developed by Eli (c) 2023-2026
