@@ -78,7 +78,7 @@ tasks = await flyer.get_tasks(user_id=user_id, language_code=language_code, limi
 
 # Получиение статуса задания
 signature = tasks[0]['signature']  # пример
-status = await flyer.check_task(user_id=user_id, signature=signature)
+status = await flyer.check_task(signature)
 
 ```
 
@@ -90,7 +90,7 @@ tasks = await flyer.get_tasks_max(chat_id=chat_id, user_id=user_id, user_locale=
 
 # Получиение статуса задания
 signature = tasks[0]['signature']  # пример
-status = await flyer.check_task_max(user_id=user_id, signature=signature)
+status = await flyer.check_task_max(signature)
 
 ```
 
